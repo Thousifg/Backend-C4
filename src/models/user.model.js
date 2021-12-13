@@ -17,5 +17,14 @@ userSchema.pre("save", async function (next) {
     return next();
 });
 
+userSchema.methods.comparePassword  = function (password) {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, this.password, function(err, match) {
+            if(err) return reject(err);
+
+            return resolve(match);
+        })
+    })
+}
 
 module.exports = model("users", userSchema);
